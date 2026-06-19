@@ -1,0 +1,10 @@
+# FitCover India
+web/
+node_modules/
+__pycache__/
+*.py[cod]
+.env
+dev.db
+*.db
+.venv/
+venv/

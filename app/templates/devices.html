@@ -1,0 +1,35 @@
+{% extends "base.html" %}
+{% block title %}Devices — FitCover India{% endblock %}
+{% block body %}
+{% include "_nav.html" %}
+<main class="mx-auto max-w-3xl px-4 py-8">
+  <h1 class="text-2xl font-bold">Connected devices</h1>
+  <p class="mt-1 text-sm text-zinc-500">Sync Garmin and Fitbit directly. Apple Health & Google Health require a mobile app (Phase 2).</p>
+
+  {% if connected %}<div class="mt-4 rounded-lg border border-emerald-200 bg-emerald-50 px-4 py-3 text-sm text-emerald-800">Successfully connected {{ connected }}!</div>{% endif %}
+  {% if error %}<div class="mt-4 rounded-lg border border-red-200 bg-red-50 px-4 py-3 text-sm text-red-700">Connection error: {{ error }}</div>{% endif %}
+
+  <div class="mt-8 space-y-4">
+    {% for p in providers %}
+    <div class="flex items-center justify-between rounded-xl border border-zinc-200 bg-white p-5 shadow-sm">
+      <div>
+        <p class="font-semibold">{{ p.name }}</p>
+        <p class="text-sm text-zinc-500">
+          {% if p.connected %}Connected{% elif p.configured %}Not connected{% else %}API keys not configured — add to .env{% endif %}
+        </p>
+      </div>
+      {% if not p.connected and p.configured %}
+      <a href="/devices/{{ p.id }}/connect" class="rounded-lg bg-emerald-700 px-4 py-2 text-sm font-semibold text-white">Connect</a>
+      {% elif p.connected %}
+      <span class="rounded-full bg-emerald-100 px-3 py-1 text-sm font-medium text-emerald-800">Active</span>
+      {% endif %}
+    </div>
+    {% endfor %}
+
+    <div class="rounded-xl border border-dashed border-zinc-300 bg-zinc-50 p-5">
+      <p class="font-medium text-zinc-700">Apple Health & Google Health Connect</p>
+      <p class="mt-1 text-sm text-zinc-500">No web API available. Companion mobile app planned for Phase 2.</p>
+    </div>
+  </div>
+</main>
+{% endblock %}

@@ -1,0 +1,71 @@
+{% extends "base.html" %}
+{% block title %}Dashboard — FitCover India{% endblock %}
+{% block body %}
+{% include "_nav.html" %}
+<main class="mx-auto max-w-6xl px-4 py-8">
+  <div class="mb-8 flex flex-wrap items-start justify-between gap-4">
+    <div>
+      <h1 class="text-2xl font-bold">Hello{% if user.name %}, {{ user.name }}{% endif %}</h1>
+      <p class="mt-1 text-sm text-zinc-500">Rewards-only wellness — your premium never increases for inactivity</p>
+    </div>
+    <div class="flex gap-2">
+      {% if not has_devices %}
+      <form method="post" action="/sync/demo"><button type="submit" class="rounded-lg border border-emerald-200 bg-emerald-50 px-4 py-2 text-sm font-medium text-emerald-800">Load demo data</button></form>
+      {% endif %}
+      <form method="post" action="/sync"><button type="submit" {% if not has_devices %}disabled{% endif %} class="rounded-lg bg-emerald-700 px-4 py-2 text-sm font-semibold text-white hover:bg-emerald-800 disabled:opacity-50">Sync devices</button></form>
+    </div>
+  </div>
+
+  <div class="grid gap-6 lg:grid-cols-3">
+    <div class="rounded-xl border border-zinc-200 bg-white p-6 shadow-sm">
+      <p class="text-sm font-medium text-zinc-500">Wellness Score</p>
+      <p class="mt-4 text-center text-5xl font-bold text-emerald-700">{{ latest_score.score if latest_score else 0 }}</p>
+      <p class="text-center text-xs text-zinc-500">/ 100</p>
+      {% if latest_score %}
+      <div class="mt-6 space-y-3 text-sm">
+        <div><span class="text-zinc-600">Activity</span><div class="mt-1 h-2 rounded-full bg-zinc-100"><div class="h-2 rounded-full bg-emerald-600" style="width: {{ latest_score.activity }}%"></div></div></div>
+        <div><span class="text-zinc-600">Cardio</span><div class="mt-1 h-2 rounded-full bg-zinc-100"><div class="h-2 rounded-full bg-emerald-600" style="width: {{ latest_score.cardio }}%"></div></div></div>
+        <div><span class="text-zinc-600">Recovery</span><div class="mt-1 h-2 rounded-full bg-zinc-100"><div class="h-2 rounded-full bg-emerald-600" style="width: {{ latest_score.recovery }}%"></div></div></div>
+        <div><span class="text-zinc-600">Consistency</span><div class="mt-1 h-2 rounded-full bg-zinc-100"><div class="h-2 rounded-full bg-emerald-600" style="width: {{ latest_score.consistency }}%"></div></div></div>
+      </div>
+      {% endif %}
+    </div>
+
+    <div class="space-y-6 lg:col-span-2">
+      <div class="rounded-xl border border-zinc-200 bg-white p-6 shadow-sm">
+        <p class="text-sm text-zinc-500">Vitality Tier</p>
+        <div class="mt-2 flex items-center gap-3">
+          <span class="rounded-full px-3 py-1 text-sm font-semibold capitalize" style="background: {{ tier.color }}22; color: {{ tier.color }}">{{ tier.label }}</span>
+          <span class="text-sm text-zinc-500">30-day avg score: {{ tier.score }}</span>
+        </div>
+        <p class="mt-2 text-sm text-zinc-500">{{ tier.active_days }} active days / 30</p>
+        <ul class="mt-4 space-y-1">
+          {% for benefit in tier.benefits %}
+          <li class="text-sm text-emerald-800">✓ {{ benefit }}</li>
+          {% endfor %}
+        </ul>
+      </div>
+
+      <div class="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+        <div class="rounded-xl border border-zinc-200 bg-white p-5 shadow-sm"><p class="text-sm text-zinc-500">Steps today</p><p class="mt-1 text-3xl font-bold text-emerald-700">{{ latest_snapshot.steps if latest_snapshot else '—' }}</p></div>
+        <div class="rounded-xl border border-zinc-200 bg-white p-5 shadow-sm"><p class="text-sm text-zinc-500">Active min</p><p class="mt-1 text-3xl font-bold text-emerald-700">{{ latest_snapshot.active_minutes if latest_snapshot else '—' }}</p></div>
+        <div class="rounded-xl border border-zinc-200 bg-white p-5 shadow-sm"><p class="text-sm text-zinc-500">Sleep (hrs)</p><p class="mt-1 text-3xl font-bold text-emerald-700">{{ latest_snapshot.sleep_hours if latest_snapshot else '—' }}</p></div>
+        <div class="rounded-xl border border-zinc-200 bg-white p-5 shadow-sm"><p class="text-sm text-zinc-500">Resting HR</p><p class="mt-1 text-3xl font-bold text-emerald-700">{{ latest_snapshot.resting_hr if latest_snapshot else '—' }}</p></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="mt-8 rounded-xl border border-zinc-200 bg-white p-6 shadow-sm">
+    <h2 class="font-semibold">30-day score trend</h2>
+    {% if scores %}
+    <div class="mt-4 flex h-32 items-end gap-1">
+      {% for s in scores %}
+      <div title="{{ s.date.strftime('%Y-%m-%d') }}: {{ s.score }}" class="flex-1 rounded-t bg-emerald-600/80" style="height: {{ [4, s.score]|max }}%"></div>
+      {% endfor %}
+    </div>
+    {% else %}
+    <p class="mt-4 text-sm text-zinc-500">Connect a device or load demo data to see your wellness score.</p>
+    {% endif %}
+  </div>
+</main>
+{% endblock %}

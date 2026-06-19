@@ -1,0 +1,36 @@
+{% extends "base.html" %}
+{% block title %}FitCover India — Wellness Data Platform{% endblock %}
+{% block body %}
+<header class="mx-auto flex max-w-6xl items-center justify-between px-4 py-6">
+  <span class="text-xl font-bold text-emerald-800">FitCover India</span>
+  <div class="flex gap-3">
+    <a href="/login" class="rounded-lg px-4 py-2 text-sm font-medium text-emerald-800 hover:bg-emerald-100">Sign in</a>
+    <a href="/register" class="rounded-lg bg-emerald-700 px-4 py-2 text-sm font-semibold text-white hover:bg-emerald-800">Get started</a>
+  </div>
+</header>
+<main class="mx-auto max-w-4xl px-4 py-20 text-center">
+  <h1 class="text-4xl font-bold tracking-tight sm:text-5xl">Wellness data platform for Indian insurers</h1>
+  <p class="mx-auto mt-6 max-w-2xl text-lg text-zinc-600">
+    Connect Garmin & Fitbit, track a daily wellness score, and unlock Vitality-style cashbacks and coupons.
+    Rewards only — premiums never increase for inactivity.
+  </p>
+  <div class="mt-10 flex justify-center gap-4">
+    <a href="/register" class="rounded-xl bg-emerald-700 px-6 py-3 font-semibold text-white hover:bg-emerald-800">Create free account</a>
+    <a href="/login" class="rounded-xl border border-zinc-300 px-6 py-3 font-semibold text-zinc-700 hover:bg-zinc-50">Sign in</a>
+  </div>
+  <div class="mt-20 grid gap-6 text-left sm:grid-cols-3">
+    <div class="rounded-xl border border-zinc-200 bg-white p-6 shadow-sm">
+      <h3 class="font-semibold">Multi-device sync</h3>
+      <p class="mt-2 text-sm text-zinc-600">Direct OAuth to Garmin & Fitbit. Unified daily metrics.</p>
+    </div>
+    <div class="rounded-xl border border-zinc-200 bg-white p-6 shadow-sm">
+      <h3 class="font-semibold">Wellness score</h3>
+      <p class="mt-2 text-sm text-zinc-600">Activity, cardio, recovery & consistency — scored 0–100 daily.</p>
+    </div>
+    <div class="rounded-xl border border-zinc-200 bg-white p-6 shadow-sm">
+      <h3 class="font-semibold">Vitality rewards</h3>
+      <p class="mt-2 text-sm text-zinc-600">Bronze → Platinum tiers unlock cashbacks and discount coupons.</p>
+    </div>
+  </div>
+</main>
+{% endblock %}
